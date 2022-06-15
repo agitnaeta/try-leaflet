@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin=""/>
+      <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin=""></script>
+   <style>
+    #map { height: 180px; }
+   </style>
+    </head>
+    <body>
+      <a class="add-marker" href="#" onclick="addMarker(this)" data-lat="-6.200" data-lng="106">
+          Add Marker
+      </a>
+      |
+      <a class="remove-marker" href="#" onclick="removeMarker(this)">
+        Remove Marker
+      </a>
+
+
+     
+      <div id="map"></div>
+      <script>
+        var zoomLevel = 7;
+        var activeMarker  = null;
+        var map = L.map('map')
+          .setView([-6.200,106.81], zoomLevel);
+
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+            })
+            .addTo(map);
+
+            // add marker when click map 
+            map.on('click', function(e) {
+              let latLng = e.latlng;
+              let marker = L.marker(latLng).addTo(map);
+              marker.on('click', function() {
+                this.addTo(map).remove();
+              });
+            });
+
+
+        function addMarker(e){
+            let lat = e.dataset.lat;
+            let lng = e.dataset.lng;
+            var  marker = L.marker([lat, lng]).addTo(map);
+            activeMarker = marker;
+        }
+
+        function removeMarker(e){
+            activeMarker.addTo(map).remove();
+        }
+
+      </script>
+    </body>
+</html>
